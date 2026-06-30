@@ -26,7 +26,7 @@ export class NutriAgentSettingTab extends PluginSettingTab {
     // ══════════════════════════════════════════════════════
     //  数据文件路径配置
     // ══════════════════════════════════════════════════════
-    containerEl.createEl("h2", { text: "📁 数据文件路径" });
+    new Setting(containerEl).setName("📁 数据文件路径").setHeading();
 
     new Setting(containerEl)
       .setName("身体档案路径")
@@ -83,7 +83,7 @@ export class NutriAgentSettingTab extends PluginSettingTab {
     // ══════════════════════════════════════════════════════
     //  AI 引擎与云端连接配置
     // ══════════════════════════════════════════════════════
-    containerEl.createEl("h2", { text: "🤖 AI 引擎与云端连接配置" });
+    new Setting(containerEl).setName("🤖 AI 引擎与云端连接配置").setHeading();
 
     new Setting(containerEl)
       .setName("AI 驱动模式")
@@ -204,7 +204,7 @@ export class NutriAgentSettingTab extends PluginSettingTab {
     // ══════════════════════════════════════════════════════
     //  定时任务配置
     // ══════════════════════════════════════════════════════
-    containerEl.createEl("h2", { text: "⏰ 定时任务" });
+    new Setting(containerEl).setName("⏰ 定时任务").setHeading();
 
     new Setting(containerEl)
       .setName("启用每日自动生成")
@@ -241,7 +241,7 @@ export class NutriAgentSettingTab extends PluginSettingTab {
 
     // ── 🚫 饮食黑名单管理 ─────────────────────────
     // ── 用户自定义食材别名 ──
-    containerEl.createEl("h3", { text: "🏷️ 食材别名映射" });
+    new Setting(containerEl).setName("🏷️ 食材别名映射").setHeading();
     containerEl.createEl("p", {
       text: '当食谱中的食材名与内置词库不匹配时（如「三层肉」→「五花肉」），在此添加别名。每行一条，格式：别名=标准名',
       cls: "setting-item-description",
@@ -265,7 +265,7 @@ export class NutriAgentSettingTab extends PluginSettingTab {
     });
 
     // ── 从网页导入食谱 ──
-    containerEl.createEl("h3", { text: "🌐 从网页导入食谱" });
+    new Setting(containerEl).setName("🌐 从网页导入食谱").setHeading();
     containerEl.createEl("p", {
       text: "粘贴下厨房、美食天下、AllRecipes 等食谱网页链接，自动提取菜名、食材和步骤。支持 JSON-LD 结构化数据。",
       cls: "setting-item-description",
@@ -411,7 +411,7 @@ ${recipe.steps.map((s: string, idx: number) => `${idx + 1}. ${s}`).join("\n\n")}
     });
 
     // ── 自动化预处理规则 ──
-    containerEl.createEl("h3", { text: "⚙️ 自动化预处理规则" });
+    new Setting(containerEl).setName("⚙️ 自动化预处理规则").setHeading();
     containerEl.createEl("p", {
       text: "在食材解析前自动替换文本。每行一条：匹配文本=替换文本。例如「去皮鸡胸肉=鸡胸肉」",
       cls: "setting-item-description",
@@ -467,7 +467,7 @@ ${recipe.steps.map((s: string, idx: number) => `${idx + 1}. ${s}`).join("\n\n")}
     });
 
     // ── 数据导入导出 ──
-    containerEl.createEl("h3", { text: "💾 数据备份与迁移" });
+    new Setting(containerEl).setName("💾 数据备份与迁移").setHeading();
     containerEl.createEl("p", {
       text: "导出全部设置、食谱替换记录、食材别名和打卡历史。在新设备上导入即可无缝迁移。",
       cls: "setting-item-description",
@@ -517,7 +517,7 @@ ${recipe.steps.map((s: string, idx: number) => `${idx + 1}. ${s}`).join("\n\n")}
       } catch (e) { new Notice(`❌ 文件读取失败: ${e}`); }
     });
 
-    containerEl.createEl("h3", { text: "🚫 饮食屏蔽小黑屋" });
+    new Setting(containerEl).setName("🚫 饮食屏蔽小黑屋").setHeading();
     containerEl.createEl("p", { text: "管理标记为吃腻了的食材，屏蔽期内 AI 不会推荐。", cls: "setting-item-description" });
     const blContainer = containerEl.createDiv();
     blContainer.createEl("p", { text: "⏳ 加载中...", attr: { style: "color:var(--text-faint);" } });

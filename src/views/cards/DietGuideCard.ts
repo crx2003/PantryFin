@@ -254,19 +254,22 @@ export class DietGuideCard extends BaseCard {
     }
 
     const tagsRow = card.createDiv({ attr: { style: "display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; margin-bottom: 4px;" } });
-    const macroTags = (proteinTarget > 0)
-      ? `<span style="font-size: 11px; font-weight: 700; color: #fff; background: #e07b39; padding: 3px 8px; border-radius: 6px;">🥩 蛋白质 ${proteinTarget}g</span>
-         <span style="font-size: 11px; font-weight: 700; color: #fff; background: #e4b539; padding: 3px 8px; border-radius: 6px;">🍚 碳水 ${carbsTarget}g</span>
-         <span style="font-size: 11px; font-weight: 700; color: #fff; background: #6b9fd4; padding: 3px 8px; border-radius: 6px;">🧈 脂肪 ${fatTarget}g</span>`
-      : "";
     const actualRatio = targetCals > 0 ? actualTotalCals / targetCals : 0;
     const actualColor = actualRatio > 1.0 ? "#dc2626" : actualRatio > 0.8 ? "#f59e0b" : "var(--nd-accent)";
-    tagsRow.innerHTML = `
-      <span style="font-size: 12px; font-weight: 800; color: #fff; background: var(--nd-accent); padding: 4px 10px; border-radius: 6px; box-shadow: 0 2px 6px rgba(16,185,129,0.25);">🎯 目标热量 ${targetCals} kcal</span>
-      <span style="font-size: 12px; font-weight: 800; color: #fff; background: ${actualColor}; padding: 4px 10px; border-radius: 6px;">🔥 实际热量 ${actualTotalCals} kcal (${Math.round(actualRatio * 100)}%)</span>
-      ${macroTags}
-      <span style="font-size: 12px; font-weight: 700; color: var(--text-normal); background: var(--nd-card-bg); border: 1px solid var(--nd-card-border); padding: 3px 10px; border-radius: 6px;">🥗 ${meals.length + Object.keys(mealReplacements).filter(k => !aiCalMap[k]).length} 餐</span>
-    `;
+    const createTag = (text: string, bg: string, styleExtra = "") => {
+      const s = tagsRow.createEl("span", { text });
+      s.setAttribute("style", `font-size: 12px; font-weight: 800; color: #fff; background: ${bg}; padding: 4px 10px; border-radius: 6px; ${styleExtra}`);
+    };
+    createTag(`🎯 目标热量 ${targetCals} kcal`, "var(--nd-accent)", "box-shadow: 0 2px 6px rgba(16,185,129,0.25);");
+    createTag(`🔥 实际热量 ${actualTotalCals} kcal (${Math.round(actualRatio * 100)}%)`, actualColor);
+    if (proteinTarget > 0) {
+      createTag(`🥩 蛋白质 ${proteinTarget}g`, "#e07b39", "font-size:11px;");
+      createTag(`🍚 碳水 ${carbsTarget}g`, "#e4b539", "font-size:11px;");
+      createTag(`🧈 脂肪 ${fatTarget}g`, "#6b9fd4", "font-size:11px;");
+    }
+    const mealsCount = meals.length + Object.keys(mealReplacements).filter(k => !aiCalMap[k]).length;
+    const countTag = tagsRow.createEl("span", { text: `🥗 ${mealsCount} 餐` });
+    countTag.setAttribute("style", "font-size: 12px; font-weight: 700; color: var(--text-normal); background: var(--nd-card-bg); border: 1px solid var(--nd-card-border); padding: 3px 10px; border-radius: 6px;");
 
     // v4.2: 所有餐次默认全部展开，用户可独立折叠
     const mealColors: Record<string, string> = { "早餐": "#e48962", "午餐": "#95cd81", "晚餐": "#91b0df", "加餐": "#d8a1ce", "早午餐": "#e4d277", "夜宵": "#79ced6" };
@@ -497,7 +500,7 @@ export class DietGuideCard extends BaseCard {
           incBtn.addEventListener("click", () => updateServings(1));
 
           const ingTitle = body.createEl("div", { attr: { style: "font-weight:600;color:var(--nd-accent);margin-bottom:6px;font-size:14px;" } });
-          ingTitle.innerHTML = `📋 用料（双击数字编辑实际用量）:`;
+          ingTitle.textContent = "📋 用料（双击数字编辑实际用量）:";
           for (const ing of recipe.ingredients) {
             if (!ing.isCore && ing.amountGrams < 5) continue;
             const actualGrams = repl?.actualQuantities?.[ing.name] ?? ing.amountGrams;
@@ -550,8 +553,10 @@ export class DietGuideCard extends BaseCard {
           }
         }
         if (recipe?.stepsPreview) {
-          body.createEl("div", { attr: { style: "margin-top:8px;" } })
-            .innerHTML = `<strong style="color:var(--nd-accent);">👨‍🍳 做法：</strong>${recipe.stepsPreview}`;
+          const stepsDiv = body.createEl("div", { attr: { style: "margin-top:8px;" } });
+          const strong = stepsDiv.createEl("strong", { text: "👨‍🍳 做法：" });
+          strong.style.color = "var(--nd-accent)";
+          stepsDiv.appendChild(document.createTextNode(recipe.stepsPreview));
         }
         // v4.2: "打开完整食谱" 链接（仅替换自选食谱）
         if (repl?.recipeId) {
@@ -577,12 +582,20 @@ export class DietGuideCard extends BaseCard {
           const ingDiv = body.createEl("div", {
             attr: { style: "margin-bottom:6px;", "data-role": "meal-summary" }
           });
-          ingDiv.innerHTML = `<strong style="color:var(--nd-accent);">📋 用料：</strong>${meal.ingredients}`;
+          const strong = ingDiv.createEl("strong", { text: "📋 用料：" });
+          strong.style.color = "var(--nd-accent)";
+          ingDiv.appendChild(document.createTextNode(meal.ingredients));
         }
         // 旧格式：显示完整步骤；新格式：步骤在链接文件中，看板不显示
         if (!isNewFormat && meal.description && meal.description.trim()) {
-          body.createEl("div", { attr: { style: "line-height:1.8;" } })
-            .innerHTML = `<strong style="color:var(--nd-accent);">👨‍🍳 做法：</strong><br>${meal.description.replace(/\n/g, "<br>")}`;
+          const descDiv = body.createEl("div", { attr: { style: "line-height:1.8;" } });
+          const strong = descDiv.createEl("strong", { text: "👨‍🍳 做法：" });
+          strong.style.color = "var(--nd-accent)";
+          descDiv.createEl("br");
+          meal.description.split("\n").forEach((line, idx) => {
+            if (idx > 0) descDiv.createEl("br");
+            descDiv.appendChild(document.createTextNode(line));
+          });
         }
         // 新格式：提示点击打开查看完整食谱
         if (isNewFormat && meal.ingredients) {
@@ -592,7 +605,7 @@ export class DietGuideCard extends BaseCard {
               "data-role": "meal-file-hint"
             }
           });
-          hintEl.innerHTML = "💡 点击 📄 查看完整食谱与步骤";
+          hintEl.textContent = "💡 点击 📄 查看完整食谱与步骤";
           hintEl.addEventListener("click", (ev) => { ev.stopPropagation(); this._openMealFile(meal.label); });
         }
         // 单菜谱限定对话按钮

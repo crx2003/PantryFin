@@ -297,7 +297,7 @@ ${profile.preferences.dislikes.length > 0 ? `11. 避免使用以下食材: ${pro
   // ══════════════════════════════════════════════════════
 
   private stripAnsi(text: string): string {
-    // eslint-disable-next-line no-control-regex
+    // eslint-disable-next-line no-control-regex -- ANSI escape codes require control characters in regex
     return text.replace(
       /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
       ""

@@ -214,7 +214,6 @@ export default class NutriAgentPlugin extends Plugin {
   }
 
   onunload(): void {
-    this.app.workspace.detachLeavesOfType(VIEW_TYPE_DASHBOARD);
     console.log("PantryFin: Plugin unloaded.");
   }
 

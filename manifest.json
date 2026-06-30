@@ -2,7 +2,7 @@
   "id": "pantryfin",
   "name": "PantryFin",
   "version": "2.0.0",
-  "minAppVersion": "1.0.0",
+  "minAppVersion": "1.5.0",
   "description": "AI-powered meal planner that flows ingredients from your pantry to your plate. Mobile-optimized with Chinese ingredient recognition and calorie tracking.",
   "author": "PantryFin",
   "authorUrl": "",

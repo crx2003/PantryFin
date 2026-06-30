@@ -119,15 +119,18 @@ export class HtmlArchiver {
 
       // 7. 离线标识
       const banner = doc.createElement("div");
-      banner.innerHTML = `
-        <div style="position:fixed;top:0;left:0;right:0;z-index:9999;
-                    background:rgba(153,135,108,0.95);color:#fff;padding:6px 16px;
-                    font-size:12px;text-align:center;font-family:sans-serif;
-                    box-shadow:0 1px 4px rgba(0,0,0,0.15);">
-          📦 PantryFin 离线食谱存档 (${downloaded}/${imgEls.length} 图片已本地化) · 原始来源: <a href="${sourceUrl}" style="color:#fff;text-decoration:underline;">${sourceUrl}</a>
-        </div>
-        <div style="height:36px;"></div>
-      `;
+      const bannerDiv = doc.createElement("div");
+      bannerDiv.setAttribute("style", "position:fixed;top:0;left:0;right:0;z-index:9999;background:rgba(153,135,108,0.95);color:#fff;padding:6px 16px;font-size:12px;text-align:center;font-family:sans-serif;box-shadow:0 1px 4px rgba(0,0,0,0.15);");
+      bannerDiv.textContent = `📦 PantryFin 离线食谱存档 (${downloaded}/${imgEls.length} 图片已本地化) · 原始来源: `;
+      const aEl = doc.createElement("a");
+      aEl.setAttribute("href", sourceUrl);
+      aEl.setAttribute("style", "color:#fff;text-decoration:underline;");
+      aEl.textContent = sourceUrl;
+      bannerDiv.appendChild(aEl);
+      const spacer = doc.createElement("div");
+      spacer.setAttribute("style", "height:36px;");
+      banner.appendChild(bannerDiv);
+      banner.appendChild(spacer);
       doc.body?.insertBefore(banner, doc.body.firstChild);
 
       // 8. 序列化

@@ -8,15 +8,30 @@ export class ButlerChatCard extends BaseCard {
     const historyEl = card.createDiv({ cls: "nutri-daily-history" });
     if (this.context.dailyMessages.length === 0 && !this.context.streamingReply) {
       const welcome = historyEl.createDiv({ cls: "nutri-daily-msg nutri-daily-ai" });
-      welcome.innerHTML = `<strong style="color:var(--nd-accent);">🤖 【智能膳食管家】</strong><br>您好！我是您的 AI 营养专属顾问（已接入 DeepSeek 引擎）。您可以对我想说任何话，例如：<br>• <i>"我刚吃了 200g 鸡胸肉和一碗米饭，帮我记录并计算热量"</i><br>• <i>"帮我定制一份适合下周的低卡减脂食谱"</i><br>• <i>"我买了一斤西红柿和两块豆腐，记入库存"</i>`;
+      const strong = welcome.createEl("strong", { text: "🤖 【智能膳食管家】" });
+      strong.style.color = "var(--nd-accent)";
+      welcome.createEl("br");
+      welcome.appendChild(document.createTextNode("您好！我是您的 AI 营养专属顾问（已接入 DeepSeek 引擎）。您可以对我想说任何话，例如："));
+      welcome.createEl("br");
+      welcome.appendChild(document.createTextNode("• \"我刚吃了 200g 鸡胸肉和一碗米饭，帮我记录并计算热量\""));
+      welcome.createEl("br");
+      welcome.appendChild(document.createTextNode("• \"帮我定制一份适合下周的低卡减脂食谱\""));
+      welcome.createEl("br");
+      welcome.appendChild(document.createTextNode("• \"我买了一斤西红柿和两块豆腐，记入库存\""));
     }
+    const appendLines = (container: HTMLElement, content: string) => {
+      content.split("\n").forEach((line, idx) => {
+        if (idx > 0) container.createEl("br");
+        container.appendChild(document.createTextNode(line));
+      });
+    };
     for (const m of this.context.dailyMessages) {
       const b = historyEl.createDiv({ cls: `nutri-daily-msg nutri-daily-${m.sender}` });
-      b.innerHTML = m.text.replace(/\n/g, "<br>");
+      appendLines(b, m.text);
     }
     if (this.context.streamingReply) {
       const b = historyEl.createDiv({ cls: "nutri-daily-msg nutri-daily-ai streaming-cursor" });
-      b.innerHTML = this.context.streamingReply.text.replace(/\n/g, "<br>");
+      appendLines(b, this.context.streamingReply.text);
     } else if (this.context.isDailyThinking) {
       historyEl.createDiv({ cls: "nutri-daily-msg nutri-daily-ai nutri-thinking", text: "🤖 常驻终端推演中..." });
     }

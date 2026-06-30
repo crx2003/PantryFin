@@ -1,0 +1,1195 @@
+/* ═══════════════════════════════════════════════════════════════
+   PantryFin — Yori Dashboard 设计哲学
+   保留: 12列 Grid 布局骨架
+   替换: 配色 / 字体 / 卡片 / 按钮 / 全部视觉
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 设计令牌 (Yori 暖白现代风格) ── */
+:root {
+	--nd-accent: #99876c;
+	--nd-accent-deep: #af9165;
+	--nd-accent-soft: #efe8e0;
+	--nd-panel-bg: #f8f7f6;
+	--nd-card-bg: #ffffff;
+	--nd-card-border: #e8e3da;
+	--nd-text: #3d3429;
+	--nd-text-soft: #8a7e6f;
+	--nd-text-muted: #b5aa9a;
+	--nd-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+	--nd-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
+	--nd-radius: 10px;
+	--nd-radius-sm: 6px;
+	--nd-radius-xs: 4px;
+	--nd-gap: 7px;
+	--nd-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+	--nd-font-mono: "SFMono-Regular", "Menlo", "Consolas", monospace;
+	font-family: var(--nd-font);
+}
+
+/* ── Dashboard 视图宿主导入 ── */
+.museum-home-view .view-header,
+.museum-home-view .view-header-nav-buttons,
+.museum-home-view .view-actions {
+	background: var(--nd-panel-bg);
+}
+
+.museum-home-view .view-content {
+	padding: 14px 18px 24px;
+	background: var(--nd-panel-bg);
+	overflow-y: auto;
+}
+
+.museum-home-view-content {
+	min-height: max-content;
+	color: var(--nd-text);
+	font-size: 15px;
+	padding-bottom: 28px;
+}
+
+/* ── 12列 Grid 布局 (保留不变) ── */
+.museum-home-grid {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	grid-template-areas:
+		"chat chat chat chat chat chat tracker tracker tracker tracker tracker tracker"
+		"study study study study study study study study tasks tasks tasks tasks"
+		"pantry pantry pantry pantry pantry pantry pantry pantry pantry pantry pantry pantry";
+	gap: 7px;
+	max-width: 1840px;
+	margin: 0 auto;
+	padding-bottom: 24px;
+}
+
+/* ── 卡片 (Yori 风格: 白底 + 细边框 + 轻阴影) ── */
+.museum-live-card {
+	position: relative;
+	overflow: hidden;
+	min-height: 0;
+	padding: 9px;
+	border: 1px solid var(--nd-card-border);
+	border-radius: var(--nd-radius);
+	background: var(--nd-card-bg);
+	color: var(--nd-text);
+	box-shadow: var(--nd-shadow);
+	transition: box-shadow 0.2s ease;
+}
+
+.museum-live-card:hover {
+	box-shadow: var(--nd-shadow-hover);
+}
+
+.museum-live-card > * {
+	position: relative;
+	z-index: 1;
+}
+
+/* ── Grid Area 定位 (保留) ── */
+.area-study   { grid-area: study;   height: 560px; overflow-y: auto; text-align: left; }
+.area-words   { grid-area: chat;    height: 240px; overflow-y: auto; }
+.area-tasks   { grid-area: tasks;   height: 560px; overflow-y: auto; }
+.area-pantry  { grid-area: pantry;  height: 220px; overflow-y: auto; }
+.area-focus   { grid-area: tracker; height: auto; }
+
+/* ── 卡片头部 ── */
+.museum-live-card-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin-bottom: 8px;
+	color: var(--nd-text-soft);
+}
+
+.museum-live-card-header h3 {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--nd-text);
+}
+
+.museum-live-card-header button {
+	border: 1px solid var(--nd-card-border);
+	border-radius: var(--nd-radius-sm);
+	padding: 3px 8px;
+	color: var(--nd-accent);
+	background: transparent;
+	cursor: pointer;
+	font-size: 11px;
+	transition: background 0.15s;
+}
+
+.museum-live-card-header button:hover {
+	background: var(--nd-accent-soft);
+}
+
+/* ── Hero / Study / Focus 艺术卡 (简化) ── */
+.museum-art-hero,
+.museum-art-study,
+.museum-art-focus {
+	background-size: cover;
+	background-position: center;
+}
+
+.museum-art-hero {
+	background: linear-gradient(135deg, var(--nd-accent-soft), var(--nd-card-bg));
+}
+
+.museum-art-study {
+	background: linear-gradient(135deg, #f5f0e8, var(--nd-card-bg));
+}
+
+.museum-art-focus {
+	background: linear-gradient(135deg, #eef5ea, var(--nd-card-bg));
+}
+
+/* ── Hero 卡片内容 ── */
+.museum-live-card h1,
+.museum-live-card h2 {
+	margin: 8px 0 4px;
+	font-size: 22px;
+	line-height: 1.15;
+	color: var(--nd-text);
+	font-weight: 700;
+	letter-spacing: 0;
+}
+
+.museum-live-card h2 {
+	font-size: 19px;
+}
+
+.museum-card-kicker,
+.museum-muted-line,
+.museum-source,
+.museum-empty {
+	color: var(--nd-text-soft);
+	font-size: 11px;
+}
+
+.museum-large-date {
+	margin-top: 28px;
+	color: var(--nd-accent-deep);
+	font-size: 15px;
+}
+
+.museum-clock {
+	margin-top: 6px;
+	font-size: 30px;
+	line-height: 1;
+	color: var(--nd-accent);
+	font-variant-numeric: tabular-nums;
+}
+
+.museum-hero-value {
+	margin-top: 8px;
+	font-size: 28px;
+	line-height: 1;
+	color: var(--nd-accent);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ── 日期切换 Segments ── */
+.museum-segments {
+	display: flex;
+	gap: 6px;
+	margin-top: 12px;
+}
+
+.museum-segments button {
+	width: 34px;
+	height: 23px;
+	border: 1px solid var(--nd-card-border);
+	border-radius: 999px;
+	color: var(--nd-text-soft);
+	background: transparent;
+	cursor: pointer;
+	font-size: 14px;
+	transition: all 0.15s;
+}
+
+.museum-segments button.is-active {
+	color: var(--nd-accent);
+	border-color: var(--nd-accent);
+	background: var(--nd-accent-soft);
+}
+
+/* ── 专注计时器 ── */
+.museum-focus-time {
+	margin: 22px 0 18px;
+	font-size: 32px;
+	color: var(--nd-accent);
+	font-variant-numeric: tabular-nums;
+}
+
+.museum-primary-button {
+	border: 1px solid var(--nd-accent);
+	border-radius: var(--nd-radius-sm);
+	padding: 5px 12px;
+	color: var(--nd-accent);
+	background: transparent;
+	cursor: pointer;
+	font-size: 14px;
+	transition: all 0.15s;
+}
+
+.museum-primary-button:hover {
+	background: var(--nd-accent-soft);
+}
+
+.museum-secondary-button {
+	border: 1px solid var(--nd-card-border);
+	border-radius: var(--nd-radius-sm);
+	padding: 3px 7px;
+	color: var(--nd-text-soft);
+	background: transparent;
+	cursor: pointer;
+	font-size: 11px;
+}
+
+/* ── 导航按钮 ── */
+.museum-home-nav {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 7px;
+}
+
+.museum-space-button {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 44px;
+	padding: 8px;
+	border: 1px solid var(--nd-card-border);
+	border-radius: 8px;
+	background: var(--nd-card-bg);
+	color: var(--nd-text);
+	text-align: left;
+	cursor: pointer;
+	transition: all 0.15s;
+}
+
+.museum-space-button:hover {
+	border-color: var(--nd-accent);
+	background: var(--nd-accent-soft);
+}
+
+.museum-space-button strong,
+.museum-space-button small {
+	display: block;
+}
+
+.museum-space-button small {
+	margin-top: 2px;
+	color: var(--nd-text-soft);
+	font-size: 10px;
+}
+
+/* ── 引用块 ── */
+.museum-live-card blockquote {
+	position: absolute;
+	left: 34px;
+	bottom: 38px;
+	max-width: 420px;
+	margin: 0;
+	border-left: 3px solid var(--nd-accent);
+	padding-left: 10px;
+	color: var(--nd-text-soft);
+	font-size: 14px;
+}
+
+/* ── 任务行 ── */
+.museum-task-row {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	min-height: 26px;
+	padding: 4px 0;
+	border-bottom: 1px solid var(--nd-card-border);
+	color: var(--nd-text);
+	font-size: 14px;
+}
+
+.museum-task-row input {
+	accent-color: var(--nd-accent);
+}
+
+/* ═══════════════════════════════════════════════════════
+   NutriAgent 专属组件 (Yori 风格)
+   ═══════════════════════════════════════════════════════ */
+
+/* ── AI 聊天历史 ── */
+.nutri-daily-history {
+	max-height: 180px;
+	min-height: 120px;
+	overflow-y: auto;
+	margin: 10px 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding-right: 4px;
+}
+
+.nutri-daily-msg {
+	font-size: 14px;
+	padding: 8px 12px;
+	border-radius: 8px;
+	line-height: 1.5;
+	max-width: 90%;
+	word-break: break-word;
+}
+
+.nutri-daily-user {
+	background: var(--nd-accent-soft);
+	align-self: flex-end;
+	color: var(--nd-text);
+	border-bottom-right-radius: 2px;
+}
+
+.nutri-daily-ai {
+	background: var(--nd-panel-bg);
+	align-self: flex-start;
+	color: var(--nd-text);
+	border: 1px solid var(--nd-card-border);
+	border-left: 3px solid var(--nd-accent);
+	border-bottom-left-radius: 2px;
+}
+
+/* ── AI 聊天输入 ── */
+.nutri-agy-input-row {
+	display: flex;
+	gap: 8px;
+	margin-top: 8px;
+}
+
+.nutri-agy-textarea {
+	flex: 1;
+	background: var(--nd-panel-bg) !important;
+	border: 1px solid var(--nd-card-border) !important;
+	border-radius: 8px !important;
+	color: var(--nd-text) !important;
+	padding: 8px 12px !important;
+	font-size: 13px !important;
+	resize: none;
+	outline: none;
+	transition: border-color 0.2s;
+}
+
+.nutri-agy-textarea:focus {
+	border-color: var(--nd-accent) !important;
+}
+
+.nutri-agy-send-btn {
+	background: var(--nd-accent) !important;
+	color: #fff !important;
+	border: none !important;
+	border-radius: 8px !important;
+	padding: 0 16px !important;
+	font-weight: 600 !important;
+	cursor: pointer !important;
+	transition: background 0.15s;
+}
+
+.nutri-agy-send-btn:hover {
+	background: var(--nd-accent-deep) !important;
+}
+
+/* ── 食材库存胶囊 ── */
+.nutri-pantry-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-top: 6px;
+	max-height: 140px;
+	overflow-y: auto;
+}
+
+.nutri-pantry-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 5px 12px;
+	border-radius: 20px;
+	line-height: 1.4;
+	min-height: 28px;
+	border: 1px solid var(--nd-card-border);
+	background: var(--nd-card-bg);
+	margin: 3px;
+	font-size: 14px;
+	transition: transform 0.2s;
+	cursor: pointer;
+}
+
+.nutri-pantry-pill:hover {
+	transform: translateY(-1px);
+	box-shadow: var(--nd-shadow-hover);
+}
+
+.pill-meat   { background: #fde8e8; border-color: #f5b7b1; color: #922b21; }
+.pill-veg    { background: #eaf7ea; border-color: #b7e4b7; color: #2d7a2d; }
+.pill-staple { background: #fef9e7; border-color: #f9e79f; color: #92750e; }
+.pill-nutri  { background: #e8f0fe; border-color: #b7c8f5; color: #2d4a7d; }
+.pill-dairy  { background: #e8f0fe; border-color: #b7c8f5; color: #2d4a7d; }
+.pill-season { background: #f5f0e8; border-color: #ddd6c8; color: #7d6e5d; }
+.pill-other  { background: #f5f0e8; border-color: #ddd6c8; color: #7d6e5d; }
+.pill-zero   { background: #f5f5f5; border-color: #ddd; color: #999; opacity: 0.7; }
+.pill-yellow { background: #fef9e7; border-color: #f9e79f; color: #b7950b; }
+.pill-red    { background: #fdedec; border-color: #f5b7b1; color: #c0392b; }
+
+.pill-quick-add, .pill-quick-deduct, .pill-quick-zero, .pill-quick-del {
+	font-size: 11px;
+	opacity: 0.4;
+	margin-left: 2px;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+.pill-quick-del { opacity: 0.25; }
+.pill-quick-del:hover { opacity: 1; color: #e74c3c; }
+
+.nutri-pantry-pill:hover .pill-quick-add,
+.nutri-pantry-pill:hover .pill-quick-deduct,
+.nutri-pantry-pill:hover .pill-quick-zero,
+.nutri-pantry-pill:hover .pill-quick-del {
+	opacity: 1;
+	transform: scale(1.15);
+}
+
+/* ── 库存手动录入表单 ── */
+.nutri-manual-form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	background: var(--nd-panel-bg);
+	padding: 12px;
+	border-radius: var(--nd-radius-sm);
+	border: 1px solid var(--nd-card-border);
+	margin-top: 10px;
+}
+
+.nutri-form-input {
+	flex: 1 1 100px;
+	background: var(--nd-card-bg) !important;
+	border: 1px solid var(--nd-card-border) !important;
+	border-radius: var(--nd-radius-xs) !important;
+	color: var(--nd-text) !important;
+	padding: 6px 8px !important;
+	font-size: 12px !important;
+}
+
+.nutri-form-submit {
+	flex: 1 1 100%;
+	background: var(--nd-accent) !important;
+	color: #fff !important;
+	border: none !important;
+	border-radius: var(--nd-radius-xs) !important;
+	padding: 6px !important;
+	font-weight: 600 !important;
+	cursor: pointer !important;
+}
+
+.nutri-form-deduct {
+	background: #e74c3c !important;
+	color: #fff !important;
+	border: none !important;
+	border-radius: var(--nd-radius-xs) !important;
+	padding: 6px 12px !important;
+	font-weight: 600 !important;
+	cursor: pointer !important;
+}
+
+/* ── 食谱接受/生成按钮 ── */
+.nutri-accept-btn {
+	background: var(--nd-accent) !important;
+	color: #fff !important;
+	border: none !important;
+	border-radius: 20px !important;
+	padding: 4px 12px !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	cursor: pointer !important;
+	transition: background 0.15s;
+}
+
+.nutri-accept-btn:hover {
+	background: var(--nd-accent-deep) !important;
+}
+
+.nutri-add-stock-btn {
+	background: linear-gradient(135deg, var(--nd-accent-deep), var(--nd-accent)) !important;
+	color: #fff !important;
+	border: none !important;
+	border-radius: 20px !important;
+	padding: 6px 14px !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	cursor: pointer !important;
+	transition: opacity 0.15s;
+}
+
+.nutri-add-stock-btn:hover {
+	opacity: 0.9;
+}
+
+/* ── 食谱列表 ── */
+.nutri-meal-list {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-top: 10px;
+}
+
+.nutri-meal-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	background: var(--nd-panel-bg);
+	padding: 7px 10px;
+	border-radius: 6px;
+	border: 1px solid var(--nd-card-border);
+}
+
+.nutri-meal-label {
+	font-weight: 700;
+	color: var(--nd-accent);
+}
+
+.nutri-meal-desc {
+	flex: 1;
+	color: var(--nd-text-soft);
+}
+
+.nutri-meal-kcal {
+	font-size: 11px;
+	color: var(--nd-text-muted);
+	font-family: var(--nd-font-mono);
+}
+
+/* ── 宏量素卡片 ── */
+.museum-macro-row {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
+	margin: 10px 0;
+}
+
+.museum-macro-box {
+	background: var(--nd-panel-bg);
+	padding: 8px;
+	border-radius: 6px;
+	text-align: center;
+	border: 1px solid var(--nd-card-border);
+}
+
+.museum-macro-box strong {
+	display: block;
+	font-size: 15px;
+	color: var(--nd-accent);
+	margin-top: 2px;
+	font-family: var(--nd-font-mono);
+}
+
+.museum-macro-box small {
+	font-size: 10px;
+	color: var(--nd-text-soft);
+}
+
+/* ── 错误卡片 ── */
+.museum-dashboard-error {
+	padding: 14px 16px;
+	border-radius: var(--nd-radius);
+	background: #fef2f2;
+	border: 1px solid #fecaca;
+	color: #991b1b;
+}
+
+/* ── 暗色模式适配 ── */
+.theme-dark {
+	--nd-accent: #c4a882;
+	--nd-accent-deep: #d4b896;
+	--nd-accent-soft: #3a3228;
+	--nd-panel-bg: #1e1e1e;
+	--nd-card-bg: #262626;
+	--nd-card-border: #3a3a3a;
+	--nd-text: #e0dcd4;
+	--nd-text-soft: #9a9488;
+	--nd-text-muted: #6e665a;
+	--nd-shadow: 0 1px 3px rgba(0,0,0,0.3);
+	--nd-shadow-hover: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* ── 响应式 ── */
+@media (max-width: 860px) {
+	.museum-home-grid {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			"chat"
+			"tracker"
+			"study"
+			"tasks"
+			"pantry";
+	}
+
+	/* P0 移动端: 消除固定卡片高度，适配不同屏幕 */
+	.area-study,
+	.area-words,
+	.area-tasks,
+	.area-pantry {
+		height: auto !important;
+		max-height: none !important;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════
+   Recipe Picker Modal (放纵日自选餐)
+   ═══════════════════════════════════════════════════════ */
+
+.recipe-picker-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px 20px;
+  overscroll-behavior: contain;  /* P0 移动端: 阻止滚动链传递到背景 */
+}
+
+.recipe-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--nd-card-border);
+  gap: 12px;
+}
+
+.recipe-picker-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--nd-text);
+  white-space: nowrap;
+}
+
+.recipe-picker-body {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.recipe-picker-sidebar {
+  width: 130px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-right: 1px solid var(--nd-card-border);
+  padding-right: 6px;
+}
+
+.recipe-picker-cat-btn {
+  display: block;
+  width: 100%;
+  padding: 7px 10px;
+  margin-bottom: 2px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--nd-text);
+  text-align: left;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.15s;
+}
+
+.recipe-picker-cat-btn:hover {
+  background: var(--nd-accent-soft);
+}
+
+.recipe-picker-cat-btn.is-active {
+  background: var(--nd-accent-soft);
+  color: var(--nd-accent);
+  font-weight: 600;
+}
+
+.recipe-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.recipe-picker-card {
+  position: relative;
+  border: 1px solid var(--nd-card-border);
+  border-radius: var(--nd-radius);
+  background: var(--nd-card-bg);
+  padding: 10px 12px;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recipe-picker-card:hover {
+  border-color: var(--nd-accent);
+  box-shadow: var(--nd-shadow-hover);
+  transform: translateY(-1px);
+}
+
+.recipe-picker-card-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--nd-text);
+}
+
+.recipe-picker-card-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.recipe-picker-cat-badge {
+  background: var(--nd-accent-soft);
+  color: var(--nd-accent);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.recipe-picker-cal-badge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.recipe-picker-diff {
+  color: #f59e0b;
+  font-size: 10px;
+}
+
+.recipe-picker-card-ingredients {
+  font-size: 11px;
+  color: var(--nd-text-soft);
+  line-height: 1.4;
+}
+
+.recipe-picker-assign-btn {
+  margin-top: 4px;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid var(--nd-accent);
+  border-radius: 6px;
+  background: var(--nd-card-bg);
+  color: var(--nd-accent);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.recipe-picker-assign-btn:hover {
+  background: var(--nd-accent-soft);
+}
+
+.recipe-picker-assign-btn.is-assigned {
+  background: var(--nd-accent);
+  color: #fff;
+}
+
+/* Selection summary footer */
+.recipe-picker-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--nd-card-border);
+  margin-top: 8px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.recipe-picker-slot-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+}
+
+.recipe-picker-slot-pill.has-recipe {
+  background: var(--nd-accent-soft);
+  border-color: var(--nd-accent);
+  color: var(--nd-accent);
+  font-weight: 600;
+}
+
+/* Slot popup menu */
+.slot-popup {
+  position: absolute;
+  background: var(--nd-card-bg);
+  border: 1px solid var(--nd-card-border);
+  border-radius: 8px;
+  padding: 4px;
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  min-width: 140px;
+}
+
+/* Calorie gradient progress bar */
+.nutri-calorie-bar {
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #4ade80, #fde047, #fb923c, #ef4444, #7f1d1d);
+  overflow: hidden;
+  margin: 4px 0;
+}
+
+.nutri-calorie-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+/* 今日放纵 button */
+.nutri-cheat-btn {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+
+.nutri-cheat-btn:hover {
+  opacity: 0.85;
+}
+
+/* ── 响应式：移动端单列 ── */
+@media (max-width: 860px) {
+  .recipe-picker-body {
+    flex-direction: column;
+  }
+  .recipe-picker-sidebar {
+    width: 100%;
+    flex-shrink: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    border-right: none;
+    border-bottom: 1px solid var(--nd-card-border);
+    padding: 4px 8px 8px;
+    margin-bottom: 8px;
+    -webkit-overflow-scrolling: touch;   /* P0: iOS 硬件惯性回弹 */
+    scrollbar-width: none;               /* P0: Firefox 隐藏滚动条 */
+  }
+  .recipe-picker-sidebar::-webkit-scrollbar {
+    display: none;                       /* P0: Chrome/Safari 隐藏滚动条 */
+  }
+  .recipe-picker-cat-btn {
+    display: inline-block;
+    width: auto;
+    flex: 0 0 auto;
+    margin-right: 6px;
+    border-radius: 20px;                 /* P0: 移动端药丸型触控视觉 */
+  }
+  .recipe-picker-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   v4.2 食谱阅读器样式
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 食谱成品图 ── */
+.nd-recipe-image {
+  max-height: 300px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: var(--nd-radius);
+  margin-bottom: 16px;
+  box-shadow: var(--nd-shadow);
+}
+
+/* ── 烹饪步骤有序列表 ── */
+.nd-recipe-steps {
+  counter-reset: step-counter;
+  list-style: none;
+  padding-left: 0;
+}
+.nd-recipe-step {
+  counter-increment: step-counter;
+  padding: 12px 16px 12px 48px;
+  margin-bottom: 8px;
+  background: var(--nd-panel-bg);
+  border-radius: var(--nd-radius-sm);
+  position: relative;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--nd-text);
+}
+.nd-recipe-step::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  width: 26px;
+  height: 26px;
+  background: var(--nd-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 小贴士区块 ── */
+.nd-recipe-tips {
+  background: linear-gradient(135deg, #fef9ef 0%, #fdf5e6 100%);
+  border: 1px solid #e8d5a3;
+  border-radius: var(--nd-radius);
+  padding: 14px 18px;
+  margin-top: 16px;
+}
+.nd-recipe-tip {
+  font-size: 14px;
+  color: #8a6d3b;
+  padding: 4px 0;
+  line-height: 1.6;
+}
+
+/* ── 看板餐次可点击指示 ── */
+.nd-meal-clickable {
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.nd-meal-clickable:hover {
+  opacity: 0.85;
+}
+[data-role="open-meal-btn"] {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+[data-role="open-meal-btn"]:hover {
+  opacity: 1 !important;
+}
+[data-role="meal-summary"] {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--nd-text);
+}
+[data-role="meal-file-hint"] {
+  transition: color 0.15s;
+}
+[data-role="meal-file-hint"]:hover {
+  color: var(--nd-accent) !important;
+  text-decoration: underline;
+}
+[data-role="open-recipe-btn"] {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+[data-role="open-recipe-btn"]:hover {
+  background: var(--nd-accent) !important;
+  color: #fff !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   v4.3 食谱步骤图文混排样式
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 步骤配图单张 ── */
+.nd-recipe-step-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin: 10px 0;
+  box-shadow: var(--nd-shadow);
+  display: block;
+}
+
+/* ── 步骤多图并排容器 ── */
+.nd-recipe-step-gallery {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+.nd-recipe-step-gallery img {
+  flex: 1 1 200px;
+  max-width: calc(50% - 4px);
+  height: auto;
+  border-radius: 8px;
+  box-shadow: var(--nd-shadow);
+  object-fit: cover;
+}
+
+/* ── 封面成品图 ── */
+.nd-recipe-cover {
+  max-height: 360px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+
+/* ── 食谱阅读模式: 步骤间距 ── */
+.nd-recipe-step-block {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--nd-card-border);
+}
+.nd-recipe-step-block:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+.nd-recipe-step-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--nd-accent);
+  margin-bottom: 8px;
+}
+.nd-recipe-step-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--nd-text);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   v4.3 移动端优化
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 触控目标放大 (Apple HIG: 最小 44×44pt) ── */
+.is-mobile .nd-meal-box [data-role="open-meal-btn"],
+.is-mobile .nd-meal-box span[style*="cursor:pointer"] {
+  min-width: 44px !important;
+  min-height: 44px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 16px !important;
+  padding: 8px !important;
+}
+
+.is-mobile .nd-meal-box input[type="checkbox"] {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 8px !important;
+}
+
+.is-mobile .nd-meal-box button,
+.is-mobile [data-role="open-recipe-btn"] {
+  min-height: 44px;
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+/* P0: 库存快捷按钮始终可见 (取消 hover 依赖) */
+.is-mobile .nutri-pantry-pill .pill-quick-add,
+.is-mobile .nutri-pantry-pill .pill-quick-deduct,
+.is-mobile .nutri-pantry-pill .pill-quick-zero,
+.is-mobile .nutri-pantry-pill .pill-quick-del {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* P0: 移动端取消 hover 显隐，始终可见 */
+.is-mobile .nutri-pantry-pill:hover .pill-quick-add,
+.is-mobile .nutri-pantry-pill:hover .pill-quick-deduct,
+.is-mobile .nutri-pantry-pill:hover .pill-quick-zero,
+.is-mobile .nutri-pantry-pill:hover .pill-quick-del {
+  opacity: 0.7;
+}
+
+/* P0: 通用按钮触控目标 */
+.is-mobile button,
+.is-mobile [role="button"],
+.is-mobile .recipe-picker-slot-btn {
+  min-height: 44px;
+}
+
+/* P0: 月份导航箭头触控放大 */
+.is-mobile .meal-tracker-nav-btn {
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 18px;
+}
+
+/* ── 窄屏布局 (iPhone ≤428px) ── */
+@media (max-width: 428px) {
+  .museum-home-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* 热量标签行 → 换行 */
+  .museum-live-card.area-study > div[style*="flex-wrap"] {
+    gap: 4px !important;
+  }
+
+  /* 卡片全宽 */
+  .museum-live-card {
+    padding: 10px 12px !important;
+  }
+
+  /* 餐次 box 增大间距 */
+  .nd-meal-box {
+    margin-bottom: 4px;
+  }
+
+  /* 按钮全宽 */
+  .nutri-add-stock-btn {
+    width: 100%;
+    padding: 12px !important;
+    font-size: 15px !important;
+  }
+
+  /* 隐藏提示文字节省空间 */
+  [data-role="meal-file-hint"] {
+    display: none;
+  }
+}
+
+/* ── 安全区适配 (iPhone X+) ── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .recipe-picker-footer {
+    padding-bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .museum-live-card:last-child {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* P2: 扩展安全区适配 */
+  .is-mobile .view-content {
+    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+  .is-mobile .nutri-chat-messages {
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   v1.3 StockEntryModal
+   ═══════════════════════════════════════════════════════════════ */
+.stock-entry-modal {
+  min-width: 320px;
+  max-width: 420px;
+}
+.stock-entry-modal input:focus,
+.stock-entry-modal select:focus {
+  outline: 2px solid var(--nd-accent);
+  outline-offset: -1px;
+}

@@ -1,0 +1,34 @@
+{
+  "name": "pantryfin",
+  "version": "1.3.0",
+  "description": "PantryFin — AI meal planner for Obsidian. Ingredients flow from pantry to plate like a fin through water.",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "check": "npm run test && npm run build",
+    "lint": "eslint . --ext .ts,.tsx"
+  },
+  "keywords": [
+    "obsidian",
+    "plugin",
+    "nutrition",
+    "diet",
+    "meal-planning",
+    "calorie-tracker"
+  ],
+  "author": "NutriAgent",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.24.0",
+    "linkedom": "^0.18.12",
+    "obsidian": "latest",
+    "tslib": "^2.7.0",
+    "typescript": "^5.6.0",
+    "vitest": "^4.1.9"
+  }
+}

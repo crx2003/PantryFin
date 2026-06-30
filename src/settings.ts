@@ -286,7 +286,7 @@ export class NutriAgentSettingTab extends PluginSettingTab {
       const url = urlInput.value.trim();
       if (!url) { new Notice("请先输入网址"); return; }
       scrapeBtn.disabled = true; scrapeBtn.setText("⏳ 获取中...");
-      resultDiv.style.display = "none";
+      resultDiv.setCssStyles({ display: "none" });
       try {
         const resp = await requestUrl({ url, method: "GET" });
         const html = resp.text;
@@ -306,7 +306,7 @@ export class NutriAgentSettingTab extends PluginSettingTab {
 
         if (recipe && recipe.ingredients.length > 0) {
           resultDiv.empty();
-          resultDiv.style.display = "block";
+          resultDiv.setCssStyles({ display: "block" });
           resultDiv.createEl("strong", { text: `📋 ${recipe.name}`, attr: { style: "font-size:15px;color:var(--nd-accent);" } });
           const ingList = resultDiv.createDiv({ attr: { style: "margin:6px 0;font-size:12px;color:var(--nd-text);" } });
           ingList.createEl("strong", { text: `食材 (${recipe.ingredients.length}项):` });
@@ -494,7 +494,7 @@ ${recipe.steps.map((s: string, idx: number) => `${idx + 1}. ${s}`).join("\n\n")}
 
     const importInput = document.createElement("input");
     importInput.type = "file"; importInput.accept = ".json";
-    importInput.style.cssText = "display:none;";
+    importInput.setCssStyles({ display: "none" });
     ioRow.appendChild(importInput);
     const importBtn = ioRow.createEl("button", {
       text: "📥 导入备份",

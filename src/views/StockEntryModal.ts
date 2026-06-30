@@ -27,7 +27,7 @@ export class StockEntryModal extends Modal {
     const { contentEl } = this;
     contentEl.empty();
     contentEl.addClass("stock-entry-modal");
-    contentEl.style.cssText = "padding:24px;min-width:360px;";
+    contentEl.setCssStyles({ padding: "24px", minWidth: "360px" });
 
     contentEl.createEl("h3", { text: "📦 库存操作", attr: { style: "margin:0 0 16px;" } });
 

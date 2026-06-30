@@ -29,7 +29,7 @@ export class RecipePickerModal extends Modal {
     contentEl.empty();
     contentEl.addClass("recipe-picker-root");
     // 全屏模式
-    modalEl.style.cssText = "width:100vw;max-width:100vw;height:100vh;max-height:100vh;margin:0;border-radius:0;";
+    modalEl.setCssStyles({ width: "100vw", maxWidth: "100vw", height: "100vh", maxHeight: "100vh", margin: "0", borderRadius: "0" });
     modalEl.addClass("recipe-picker-fullscreen");
 
     // P0 移动端: 遮罩层拦截 touchmove 防止滚动穿透到背景
@@ -137,7 +137,7 @@ export class RecipePickerModal extends Modal {
       const url = urlInput.value.trim();
       if (!url) { new Notice("请先输入网址"); return; }
       scrapeBtn.disabled = true; scrapeBtn.setText("⏳ ...");
-      resultDiv.style.display = "none";
+      resultDiv.setCssStyles({ display: "none" });
       try {
         const resp = await requestUrl({ url, method: "GET" });
         const scraper = (this.plugin as any).recipeScraper;
@@ -148,7 +148,7 @@ export class RecipePickerModal extends Modal {
           if (agy) recipe = await scraper?.scrapeFromHtmlWithAI(resp.text, agy, url);
         }
         if (recipe && recipe.ingredients.length > 0) {
-          resultDiv.empty(); resultDiv.style.display = "block";
+          resultDiv.empty(); resultDiv.setCssStyles({ display: "block" });
           resultDiv.createEl("strong", { text: `📋 ${recipe.name}`, attr: { style: "font-size:16px;color:var(--nd-accent);" } });
           if (recipe.imageUrl) {
             resultDiv.createEl("img", { attr: { src: recipe.imageUrl, loading: "lazy", style: "max-width:100%;max-height:200px;border-radius:8px;margin-top:8px;" } });
@@ -408,17 +408,16 @@ export class RecipePickerModal extends Modal {
     card.addEventListener("click", (e) => {
       if ((e.target as HTMLElement).closest(".recipe-picker-slot-btn")) return;
       expanded = !expanded;
-      detail.style.display = expanded ? "block" : "none";
+      detail.setCssStyles({ display: expanded ? "block" : "none" });
     });
     // 删除模式：用户食谱卡片可点击删除
     if (this.deleteMode && recipe.id.startsWith("user:")) {
-      card.style.border = "2px solid #e74c3c";
-      card.style.cursor = "pointer";
+      card.setCssStyles({ border: "2px solid #e74c3c", cursor: "pointer" });
       card.addEventListener("click", async () => {
         const filePath = recipe.id.replace("user:", "");
         const file = this.app.vault.getAbstractFileByPath(filePath);
         if (file instanceof TFile) {
-          await this.app.vault.delete(file);
+          await this.app.fileManager.trashFile(file);
           new Notice(`🗑️ 已删除: ${recipe.name}`);
           this.rerenderGrid();
         }
@@ -426,7 +425,7 @@ export class RecipePickerModal extends Modal {
       return; // 删除模式下不渲染餐次按钮
     }
 
-    card.style.cursor = "pointer";
+    card.setCssStyles({ cursor: "pointer" });
 
     // ── 餐次按钮行：直接替换 ──
     const btnRow = card.createDiv({ attr: { style: "display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;" } });

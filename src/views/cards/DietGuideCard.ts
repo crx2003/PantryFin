@@ -269,7 +269,7 @@ export class DietGuideCard extends BaseCard {
     }
     const mealsCount = meals.length + Object.keys(mealReplacements).filter(k => !aiCalMap[k]).length;
     const countTag = tagsRow.createEl("span", { text: `🥗 ${mealsCount} 餐` });
-    countTag.setAttribute("style", "font-size: 12px; font-weight: 700; color: var(--text-normal); background: var(--nd-card-bg); border: 1px solid var(--nd-card-border); padding: 3px 10px; border-radius: 6px;");
+    countTag.setCssStyles({ fontSize: "12px", fontWeight: "700", color: "var(--text-normal)", background: "var(--nd-card-bg)", border: "1px solid var(--nd-card-border)", padding: "3px 10px", borderRadius: "6px" });
 
     // v4.2: 所有餐次默认全部展开，用户可独立折叠
     const mealColors: Record<string, string> = { "早餐": "#e48962", "午餐": "#95cd81", "晚餐": "#91b0df", "加餐": "#d8a1ce", "早午餐": "#e4d277", "夜宵": "#79ced6" };
@@ -367,8 +367,8 @@ export class DietGuideCard extends BaseCard {
             title: `打开${meal.label}完整食谱`
           }
         });
-        openBtn.addEventListener("mouseenter", () => { openBtn.style.opacity = "1"; });
-        openBtn.addEventListener("mouseleave", () => { openBtn.style.opacity = "0.5"; });
+        openBtn.addEventListener("mouseenter", () => { openBtn.setCssStyles({ opacity: "1" }); });
+        openBtn.addEventListener("mouseleave", () => { openBtn.setCssStyles({ opacity: "0.5" }); });
         openBtn.addEventListener("click", (ev) => {
           ev.stopPropagation();
           this._openMealFile(meal.label);
@@ -382,8 +382,8 @@ export class DietGuideCard extends BaseCard {
           text: "↩️",
           attr: { style: "font-size:12px;cursor:pointer;opacity:0.5;padding:0 2px;transition:opacity 0.2s;", title: `取消替换，恢复AI${meal.label}菜谱` }
         });
-        cancelBtn.addEventListener("mouseenter", () => { cancelBtn.style.opacity = "1"; });
-        cancelBtn.addEventListener("mouseleave", () => { cancelBtn.style.opacity = "0.5"; });
+        cancelBtn.addEventListener("mouseenter", () => { cancelBtn.setCssStyles({ opacity: "1" }); });
+        cancelBtn.addEventListener("mouseleave", () => { cancelBtn.setCssStyles({ opacity: "0.5" }); });
         cancelBtn.addEventListener("click", async (ev) => {
           ev.stopPropagation();
           if (this._mealActionBusy) return;
@@ -400,8 +400,8 @@ export class DietGuideCard extends BaseCard {
       const rerollBtn = headerRight.createSpan({
         text: "🔄", attr: { style: "font-size:12px;cursor:pointer;opacity:0.3;padding:0 2px;transition:opacity 0.2s;", title: `仅重做${meal.label}` }
       });
-      rerollBtn.addEventListener("mouseenter", () => { rerollBtn.style.opacity = "1"; });
-      rerollBtn.addEventListener("mouseleave", () => { rerollBtn.style.opacity = "0.3"; });
+      rerollBtn.addEventListener("mouseenter", () => { rerollBtn.setCssStyles({ opacity: "1" }); });
+      rerollBtn.addEventListener("mouseleave", () => { rerollBtn.setCssStyles({ opacity: "0.3" }); });
       rerollBtn.addEventListener("click", async (ev) => {
         ev.stopPropagation();
         if (this._mealActionBusy) return;
@@ -433,8 +433,8 @@ export class DietGuideCard extends BaseCard {
         text: _isBlocked ? "🚫" : "🤢",
         attr: { style: `font-size:11px;cursor:pointer;opacity:${_isBlocked ? "0.7" : "0.3"};padding:0 2px;transition:opacity 0.2s;`, title: _isBlocked ? `「${mainFood}」屏蔽中 — 点击解除` : "吃腻了？封杀主料5天" }
       });
-      fatigueBtn.addEventListener("mouseenter", () => { fatigueBtn.style.opacity = "1"; });
-      fatigueBtn.addEventListener("mouseleave", () => { fatigueBtn.style.opacity = _isBlocked ? "0.7" : "0.3"; });
+      fatigueBtn.addEventListener("mouseenter", () => { fatigueBtn.setCssStyles({ opacity: "1" }); });
+      fatigueBtn.addEventListener("mouseleave", () => { fatigueBtn.setCssStyles({ opacity: _isBlocked ? "0.7" : "0.3" }); });
       fatigueBtn.addEventListener("click", async (ev) => {
         ev.stopPropagation();
         if (_isBlocked) {
@@ -443,7 +443,7 @@ export class DietGuideCard extends BaseCard {
             await (this.context.plugin as any).ruleManager?.removeRuleLine?.(blockedRawLine);
             new Notice(`🔓 已解除「${mainFood}」屏蔽，该食材恢复推荐`);
             fatigueBtn.setText("🤢");
-            fatigueBtn.style.opacity = "0.3";
+            fatigueBtn.setCssStyles({ opacity: "0.3" });
             fatigueBtn.setAttr("title", "吃腻了？封杀主料5天");
             _isBlocked = false;
             blockedRawLine = "";
@@ -454,7 +454,7 @@ export class DietGuideCard extends BaseCard {
             await (this.context.plugin as any).ruleManager?.addFatigueRule?.(mainFood, 5);
             new Notice(`🚫 已屏蔽「${mainFood}」，未来5天不再推荐`);
             fatigueBtn.setText("🚫");
-            fatigueBtn.style.opacity = "0.7";
+            fatigueBtn.setCssStyles({ opacity: "0.7" });
             fatigueBtn.setAttr("title", `「${mainFood}」屏蔽中 — 点击解除`);
             _isBlocked = true;
           } catch { fatigueBtn.setText("🤢"); }
@@ -522,16 +522,14 @@ export class DietGuideCard extends BaseCard {
             const qtySpan = row.createSpan({ text: `${Math.round(actualGrams)}g`, attr: { style: "cursor:pointer;color:var(--nd-accent);font-weight:600;font-size:14px;transition:text-decoration 0.15s;" } });
             cb.addEventListener("change", () => {
               const s = cb.checked ? "line-through" : "none";
-              nameSpan.style.textDecoration = s;
-              qtySpan.style.textDecoration = s;
-              nameSpan.style.opacity = cb.checked ? "0.4" : "1";
-              qtySpan.style.opacity = cb.checked ? "0.4" : "1";
+              nameSpan.setCssStyles({ textDecoration: s, opacity: cb.checked ? "0.4" : "1" });
+              qtySpan.setCssStyles({ textDecoration: s, opacity: cb.checked ? "0.4" : "1" });
             });
             qtySpan.addEventListener("dblclick", (ev) => {
               ev.stopPropagation();
-              const input = document.createElement("input");
+              const input = activeDocument.createElement("input");
               input.type = "number"; input.value = String(Math.round(actualGrams));
-              input.style.cssText = "width:55px;font-size:13px;padding:1px 4px;border:1px solid var(--nd-accent);border-radius:3px;background:var(--nd-card-bg);color:var(--nd-text);";
+              input.setCssStyles({ width: "55px", fontSize: "13px", padding: "1px 4px", border: "1px solid var(--nd-accent)", borderRadius: "3px", background: "var(--nd-card-bg)", color: "var(--nd-text)" });
               qtySpan.replaceWith(input); input.focus(); input.select();
               let isSaving = false;
               const save = async () => {
@@ -555,8 +553,8 @@ export class DietGuideCard extends BaseCard {
         if (recipe?.stepsPreview) {
           const stepsDiv = body.createEl("div", { attr: { style: "margin-top:8px;" } });
           const strong = stepsDiv.createEl("strong", { text: "👨‍🍳 做法：" });
-          strong.style.color = "var(--nd-accent)";
-          stepsDiv.appendChild(document.createTextNode(recipe.stepsPreview));
+          strong.setCssStyles({ color: "var(--nd-accent)" });
+          stepsDiv.appendChild(activeDocument.createTextNode(recipe.stepsPreview));
         }
         // v4.2: "打开完整食谱" 链接（仅替换自选食谱）
         if (repl?.recipeId) {
@@ -583,18 +581,18 @@ export class DietGuideCard extends BaseCard {
             attr: { style: "margin-bottom:6px;", "data-role": "meal-summary" }
           });
           const strong = ingDiv.createEl("strong", { text: "📋 用料：" });
-          strong.style.color = "var(--nd-accent)";
-          ingDiv.appendChild(document.createTextNode(meal.ingredients));
+          strong.setCssStyles({ color: "var(--nd-accent)" });
+          ingDiv.appendChild(activeDocument.createTextNode(meal.ingredients));
         }
         // 旧格式：显示完整步骤；新格式：步骤在链接文件中，看板不显示
         if (!isNewFormat && meal.description && meal.description.trim()) {
           const descDiv = body.createEl("div", { attr: { style: "line-height:1.8;" } });
           const strong = descDiv.createEl("strong", { text: "👨‍🍳 做法：" });
-          strong.style.color = "var(--nd-accent)";
+          strong.setCssStyles({ color: "var(--nd-accent)" });
           descDiv.createEl("br");
           meal.description.split("\n").forEach((line, idx) => {
             if (idx > 0) descDiv.createEl("br");
-            descDiv.appendChild(document.createTextNode(line));
+            descDiv.appendChild(activeDocument.createTextNode(line));
           });
         }
         // 新格式：提示点击打开查看完整食谱

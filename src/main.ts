@@ -999,7 +999,7 @@ dietary_style: balanced
       leaf = workspace.getLeaf("tab");
       await leaf.setViewState({ type: VIEW_TYPE_HTML_READER, active: true });
     }
-    workspace.revealLeaf(leaf);
+    await workspace.revealLeaf(leaf);
     if (leaf.view instanceof HtmlReaderView) {
       await leaf.view.loadHtml(file);
     }
@@ -1033,7 +1033,7 @@ dietary_style: balanced
     }
 
     if (leaf) {
-      workspace.revealLeaf(leaf);
+      await workspace.revealLeaf(leaf);
     }
   }
 

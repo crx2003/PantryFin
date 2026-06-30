@@ -52,7 +52,7 @@ export class HtmlReaderView extends ItemView {
     const container = this.containerEl.children[1] as HTMLElement;
     if (!container) return;
     container.empty();
-    container.style.cssText = "padding:0;overflow:hidden;height:100%;";
+    container.setCssStyles({ padding: "0", overflow: "hidden", height: "100%" });
 
     // ── 工具栏 ──
     const toolbar = container.createDiv({

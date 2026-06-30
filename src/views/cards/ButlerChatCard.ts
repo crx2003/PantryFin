@@ -9,20 +9,20 @@ export class ButlerChatCard extends BaseCard {
     if (this.context.dailyMessages.length === 0 && !this.context.streamingReply) {
       const welcome = historyEl.createDiv({ cls: "nutri-daily-msg nutri-daily-ai" });
       const strong = welcome.createEl("strong", { text: "🤖 【智能膳食管家】" });
-      strong.style.color = "var(--nd-accent)";
+      strong.setCssStyles({ color: "var(--nd-accent)" });
       welcome.createEl("br");
-      welcome.appendChild(document.createTextNode("您好！我是您的 AI 营养专属顾问（已接入 DeepSeek 引擎）。您可以对我想说任何话，例如："));
+      welcome.appendChild(activeDocument.createTextNode("您好！我是您的 AI 营养专属顾问（已接入 DeepSeek 引擎）。您可以对我想说任何话，例如："));
       welcome.createEl("br");
-      welcome.appendChild(document.createTextNode("• \"我刚吃了 200g 鸡胸肉和一碗米饭，帮我记录并计算热量\""));
+      welcome.appendChild(activeDocument.createTextNode("• \"我刚吃了 200g 鸡胸肉和一碗米饭，帮我记录并计算热量\""));
       welcome.createEl("br");
-      welcome.appendChild(document.createTextNode("• \"帮我定制一份适合下周的低卡减脂食谱\""));
+      welcome.appendChild(activeDocument.createTextNode("• \"帮我定制一份适合下周的低卡减脂食谱\""));
       welcome.createEl("br");
-      welcome.appendChild(document.createTextNode("• \"我买了一斤西红柿和两块豆腐，记入库存\""));
+      welcome.appendChild(activeDocument.createTextNode("• \"我买了一斤西红柿和两块豆腐，记入库存\""));
     }
     const appendLines = (container: HTMLElement, content: string) => {
       content.split("\n").forEach((line, idx) => {
         if (idx > 0) container.createEl("br");
-        container.appendChild(document.createTextNode(line));
+        container.appendChild(activeDocument.createTextNode(line));
       });
     };
     for (const m of this.context.dailyMessages) {
@@ -65,7 +65,7 @@ export class ButlerChatCard extends BaseCard {
       if (!text || this.context.isDailyThinking) return;
 
       textarea.value = "";
-      textarea.style.height = "auto";
+      textarea.setCssStyles({ height: "auto" });
       this.context.dailyMessages.push({ sender: "user", text });
       this.context.isDailyThinking = true;
       this.context.scheduleRender();
@@ -92,8 +92,8 @@ export class ButlerChatCard extends BaseCard {
     };
 
     textarea.addEventListener("input", () => {
-      textarea.style.height = "auto";
-      textarea.style.height = `${Math.min(100, textarea.scrollHeight)}px`;
+      textarea.setCssStyles({ height: "auto" });
+      textarea.setCssStyles({ height: `${Math.min(100, textarea.scrollHeight)}px` });
     });
     sendBtn.addEventListener("click", sendDaily);
     textarea.addEventListener("keydown", (e: KeyboardEvent) => {

@@ -1,6 +1,6 @@
 {
   "name": "pantryfin",
-  "version": "1.3.0",
+  "version": "2.0.1",
   "description": "PantryFin — AI meal planner for Obsidian. Ingredients flow from pantry to plate like a fin through water.",
   "main": "main.js",
   "type": "module",
